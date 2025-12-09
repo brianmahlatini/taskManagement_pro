@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  /* Mobile-specific styles */
+  .mobile-nav {
+    display: flex !important;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  /* Adjust card sizes for mobile */
+  .card-mobile {
+    width: 100% !important;
+    margin: 0.5rem 0 !important;
+  }
+
+  /* Adjust board layout for mobile */
+  .board-mobile {
+    flex-direction: column !important;
+  }
+
+  /* Hide complex charts on small screens */
+  .chart-desktop {
+    display: none !important;
+  }
+
+  /* Make buttons larger for touch */
+  .btn-mobile {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+  }
+
+  /* Adjust modal sizes */
+  .modal-mobile {
+    width: 95% !important;
+    margin: 2.5% !important;
+  }
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet-specific styles */
+  .tablet-layout {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Adjust sidebar for tablets */
+  .sidebar-tablet {
+    width: 250px !important;
+  }
+}
+
+/* Desktop Responsiveness */
+@media (min-width: 1025px) {
+  .mobile-nav {
+    display: none !important;
+  }
+
+  .desktop-nav {
+    display: flex !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Print-friendly board layout */
+  .board-print {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --surface: #2a2a2a;
+    --text: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --border: #3a3a3a;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Touch device support */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button,
+  [role="button"],
+  a,
+  input,
+  textarea,
+  select {
+    min-width: 48px !important;
+    min-height: 48px !important;
+    padding: 12px !important;
+  }
+
+  /* More spacing for touch */
+  .touch-spacing {
+    margin: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+}

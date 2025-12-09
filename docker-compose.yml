@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3001:80"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # Backend service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://taskuser:taskpassword@mongo:27017/taskmanagement?authSource=admin
+      - REDIS_URL=redis://redis:6380
+      - CLIENT_URL=http://localhost:3001
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  # MongoDB service
+  mongo:
+    image: mongo:6
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=taskmanagement
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  # Redis service
+  redis:
+    image: redis:7
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+  # Mongo Express (optional web UI for MongoDB)
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8082:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+  redis-data:
+
+networks:
+  app-network:
+    driver: bridge
